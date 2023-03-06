@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Ayano.springboot1.mapper.TaskMapper">
+    <resultMap id="BaseTaskMap" type="Task">
+        <id column="task_id" property="taskId" jdbcType="INTEGER"/>
+        <result column="task_name" property="taskName" jdbcType="VARCHAR"/>
+        <result column="task_description" property="taskDescription" jdbcType="VARCHAR"/>
+        <result column="task_start_time" property="taskStartTime" jdbcType="VARCHAR"/>
+        <result column="task_end_time" property="taskEndTime" jdbcType="VARCHAR"/>
+        <result column="task_status" property="taskStatus" jdbcType="VARCHAR"/>
+        <result column="supervisor_id" property="supervisorId" jdbcType="INTEGER"/>
+        <result column="employee_id" property="employeeId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="TaskMap" type="Task" extends="BaseTaskMap">
+        <association property="employee" javaType="user">
+            <id column="user_id" property="userId" jdbcType="INTEGER"/>
+            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="Task_PlanMap" type="Task" extends="BaseTaskMap">
+        <association property="plan" javaType="Plan">
+            <id column="plan_id" property="planId" jdbcType="INTEGER"/>
+            <result column="plan_name" property="planName" jdbcType="VARCHAR"/>
+            <result column="plan_description" property="planDescription" jdbcType="VARCHAR"/>
+            <result column="plan_employee" property="planEmployee" jdbcType="VARCHAR"/>
+            <result column="plan_start_time" property="planStartTime" jdbcType="VARCHAR"/>
+            <result column="plan_end_time" property="planEndTime" jdbcType="VARCHAR"/>
+            <result column="plan_status" property="planStatus" jdbcType="INTEGER"/>
+            <result column="plan_is_feedback" property="planIsFeedback" jdbcType="INTEGER"/>
+            <result column="plan_feedback" property="planFeedback" jdbcType="VARCHAR"/>
+            <result column="task_id" property="taskId" jdbcType="INTEGER"/>
+            <association property="employee" javaType="User">
+                <id column="user_id" property="userId" jdbcType="INTEGER"/>
+                <id column="user_name" property="userName" jdbcType="VARCHAR"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="selectTask" resultMap="TaskMap">
+        SELECT *
+        FROM task t
+        INNER JOIN user u
+        WHERE t.supervisor_id=#{supervisorId}
+        AND t.employee_id = u.user_id
+    </select>
+
+    <select id="selectTaskOne" resultMap="TaskMap">
+        SELECT *
+        FROM task t
+        INNER JOIN user u
+        WHERE t.task_id=#{taskId}
+        AND t.employee_id = u.user_id
+    </select>
+
+    <select id="selectPlans" resultMap="com.Ayano.springboot1.mapper.PlanMapper.PlanMap">
+        SELECT *
+        FROM plan p
+        INNER JOIN user u
+        WHERE p.task_id=#{taskId}
+        AND p.plan_employee = u.user_id
+    </select>
+
+    <select id="selectEmployee" resultMap="com.Ayano.springboot1.mapper.UserMapper.BaseUserMap">
+        SELECT *
+        FROM user u
+        INNER JOIN supervisor_employee s_e
+        WHERE s_e.supervisor_id=#{supervisorId}
+        AND u.user_id=s_e.employee_id
+    </select>
+
+    <select id="selectEmployeeDetail" resultMap="com.Ayano.springboot1.mapper.UserMapper.BaseUserMap">
+        SELECT *
+        FROM user
+        WHERE user_id=#{employeeId}
+    </select>
+
+    <insert id="insertTask" parameterType="Task">
+        INSERT INTO task
+        VALUES(0,
+        #{taskName},
+        #{taskDescription},
+        #{taskStartTime},
+        #{taskEndTime},
+        0,
+        #{supervisorId},
+        #{employeeId})
+    </insert>
+
+    <update id="updateTaskStatus" parameterType="Task">
+        UPDATE task
+        SET task_status=#{taskStatus}
+        WHERE task_id=#{taskId}
+    </update>
+
+    <update id="updateTask" parameterType="Task">
+        UPDATE task
+        SET
+        task_name=#{taskName},
+        task_description=#{taskDescription},
+        task_start_time=#{taskStartTime},
+        task_end_time=#{taskEndTime},
+        employee_id=#{employeeId}
+        WHERE task_id=#{taskId}
+    </update>
+
+    <delete id="deleteTask" parameterType="Task">
+        DELETE FROM task
+        WHERE task_id=#{taskId}
+    </delete>
+</mapper>

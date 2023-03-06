@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>框架页</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            background-size: 100%, 100%;
+        }
+        img {
+            position: relative;
+            top: -10px;
+        }
+        #mainHead {
+            width: 100%;
+            height: 115px;
+            float: right;
+            position: relative;
+            background-color: #fcaa48;
+        }
+        #mainHead>div{
+            float: right;
+            margin-right: 10%;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div id="mainHead">
+    <img th:src="@{/imgs/logo.png}"/>
+    <div>
+        <span th:text="${session.user.getType().getTypeName()}"/>
+        :
+        <span th:text="${session.user.getUserName()}"/>
+        &nbsp;&nbsp;欢迎！
+        <button type="button" class="btn btn-link" onclick="logout()">退出登录</button>
+    </div>
+</div>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td style="width: 15%;height: 700px;" th:switch="${session.user.getType().getTypeId()}">
+            <iframe th:case="1" th:src="@{/adminMenu.html}" frameborder="0" width="250" height="800"
+                    scrolling="no"></iframe>
+            <iframe th:case="2" th:src="@{/supervisorMenu.html}" frameborder="0" width="250" height="800"
+                    scrolling="no"></iframe>
+            <iframe th:case="3" th:src="@{/employeeMenu.html}" frameborder="0" width="250" height="800"
+                    scrolling="no"></iframe>
+        </td>
+        <td style="width: 80%;height: 700px;">
+            <iframe name="content" th:src="@{/welcome.html}" frameborder="0" width="100%" height="800"
+                    scrolling="no"></iframe>
+        </td>
+    </tr>
+</table>
+</body>
+<script>
+    function logout() {
+        window.parent.location = 'toLogin';
+    }
+</script>
+</html>

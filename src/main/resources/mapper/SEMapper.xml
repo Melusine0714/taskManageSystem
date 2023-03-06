@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Ayano.springboot1.mapper.SEMapper">
+    <select id="selectSE" resultType="S_E">
+        SELECT *
+        FROM supervisor_employee s_e
+        WHERE s_e.supervisor_id=#{supervisorId}
+        AND s_e.employee_id=#{employeeId}
+    </select>
+
+    <insert id="insertSE" parameterType="S_E">
+        INSERT INTO supervisor_employee
+        VALUES(#{supervisorId},#{employeeId})
+    </insert>
+
+    <update id="updateSE" parameterType="S_E">
+        UPDATE supervisor_employee s_e
+        SET s_e.supervisor_id=#{supervisorId}
+        WHERE s_e.employee_id=#{employeeId}
+    </update>
+
+    <delete id="deleteSE" parameterType="S_E">
+        DELETE FROM supervisor_employee s_e
+        WHERE s_e.employee_id=#{employeeId}
+    </delete>
+</mapper>

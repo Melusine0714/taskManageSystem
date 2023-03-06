@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>任务列表</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="panel panel-primary">
+    <!-- 表格头 -->
+    <div class="panel-heading">
+        <h3 class="panel-title">数据表格</h3>
+    </div>
+    <!-- 表格体-->
+    <div class="panel-body">
+        <table class="table table-hover" style="margin-top: 2px;">
+            <thead>
+            <tr>
+                <th>计划名称</th>
+                <th>计划描述</th>
+                <th>制定人</th>
+                <th>起始时间</th>
+                <th>结束时间</th>
+                <th>计划状态</th>
+                <th>是否反馈</th>
+                <th>反馈内容</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bean : ${session.pageInfo.list}">
+                <td th:text="${bean.planName}"></td>
+                <td th:text="${bean.planDescription}"></td>
+                <td th:text="${bean.employee.userName}"></td>
+                <td th:text="${bean.planStartTime}"></td>
+                <td th:text="${bean.planEndTime}"></td>
+                <td th:if="${bean.planStatus == 0}">未开始</td>
+                <td th:if="${bean.planStatus == 1}">实施中</td>
+                <td th:if="${bean.planStatus == 2}">已完成</td>
+                <td th:if="${bean.planIsFeedback == 0}">未反馈</td>
+                <td th:if="${bean.planIsFeedback == 1}">已反馈</td>
+                <td th:text="${bean.planFeedback}"></td>
+            </tr>
+            <tr>
+                <td colspan="8" th:text="${msg}" style="text-align: center;font-size: 30px;"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="margin-left: 40%">
+            <form id="_pageForm" th:action="@{/Plan/SelectPlans}" method="post">
+                <div>
+                    <ul class="pagination" style="height: 100%;">
+                        <li>
+                            <a th:href="@{/Plan/SelectPlans?pageNum=}+${session.pageInfo.prePage}+'&pageSize='+${session.pageInfo.pageSize}"><<</a>
+                        </li>
+                        &nbsp;&nbsp;
+                        <li th:each="page : ${session.totalPages}">&nbsp;
+                            <a th:href="@{/Plan/SelectTask?pageNum=}+${page}+'&pageSize='+${session.pageInfo.pageSize}"><span
+                                    th:text="${page}"></span></a>&nbsp;
+                        </li>
+                        &nbsp;&nbsp;
+                        <li>
+                            <a th:href="@{/Plan/SelectPlans?pageNum=}+${session.pageInfo.nextPage}+'&pageSize='+${session.pageInfo.pageSize}">>></a>
+                        </li>&nbsp;
+                        当前页：<span th:text="${session.pageInfo.pageNum}"></span>
+                        总页数：<span th:text="${session.pageInfo.pages}"></span>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

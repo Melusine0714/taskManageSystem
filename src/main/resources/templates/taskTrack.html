@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>人员列表</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="panel panel-primary">
+    <!-- 表格头 -->
+    <div class="panel-heading">
+        <h3 class="panel-title">任务</h3>
+    </div>
+    <!-- 表格体-->
+    <div class="panel-body">
+        <table class="table table-hover" style="margin-top: 2px;">
+            <thead>
+            <tr>
+                <th>任务编号</th>
+                <th>任务名称</th>
+                <th>起始时间</th>
+                <th>结束时间</th>
+                <th>执行人</th>
+                <th>任务状态</th>
+                <th>任务描述</th>
+                <th>修改任务状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${session.taskList.get(0).taskId}"></td>
+                <td th:text="${session.taskList.get(0).taskName}"></td>
+                <td th:text="${session.taskList.get(0).taskStartTime}"></td>
+                <td th:text="${session.taskList.get(0).taskEndTime}"></td>
+                <td th:text="${session.taskList.get(0).employee.userName}"></td>
+                <td th:if="${session.taskList.get(0).taskStatus == 0}">未开始</td>
+                <td th:if="${session.taskList.get(0).taskStatus == 1}">实施中</td>
+                <td th:if="${session.taskList.get(0).taskStatus == 2}">已完成</td>
+                <td th:text="${session.taskList.get(0).taskDescription}"></td>
+                <form th:action="@{/Task/UpdateTaskStatus}" method="post">
+                <td>
+                    <label>
+                        <select name="taskStatus" class="form-select">
+                            <option value="0" selected>未开始</option>
+                            <option value="1">实施中</option>
+                            <option value="2">已完成</option>
+                        </select>
+                    </label>
+                </td>
+                <td><input id="_submit" type="submit" class="btn btn-primary" value="提 交"/>&nbsp;</td>
+                </form>
+                <td>
+                    <a th:href="@{/Task/toTaskUpdate?taskId=}+${session.taskList.get(0).taskId}"
+                       class="list-group-item list-group-item-success">调整任务</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="panel panel-primary">
+    <!-- 表格头 -->
+    <div class="panel-heading">
+        <h3 class="panel-title">计划</h3>
+    </div>
+    <!-- 表格体-->
+    <div class="panel-body">
+        <table class="table table-hover" style="margin-top: 2px;">
+            <thead>
+            <tr>
+                <th>计划名称</th>
+                <th>计划描述</th>
+                <th>执行人</th>
+                <th>计划开始时间</th>
+                <th>计划结束时间</th>
+                <th>计划状态</th>
+                <th>是否反馈</th>
+                <th>反馈内容</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="bean : ${session.plans}">
+                <td th:text="${bean.planName}"></td>
+                <td th:text="${bean.planDescription}"></td>
+                <td th:text="${bean.employee.userName}"></td>
+                <td th:text="${bean.planStartTime}"></td>
+                <td th:text="${bean.planEndTime}"></td>
+                <td th:if="${bean.planStatus == 0}">未开始</td>
+                <td th:if="${bean.planStatus == 1}">实施中</td>
+                <td th:if="${bean.planStatus == 2}">已完成</td>
+                <td th:if="${bean.planIsFeedback == 0}">未反馈</td>
+                <td th:if="${bean.planIsFeedback == 1}">已反馈</td>
+                <td th:text="${bean.planFeedback}"></td>
+            </tr>
+            <tr>
+                <td colspan="8" th:text="${msg}" style="text-align: center;font-size: 30px;"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

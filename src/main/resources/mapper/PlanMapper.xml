@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Ayano.springboot1.mapper.PlanMapper">
+    <resultMap id="BasePlanMap" type="Plan">
+        <id column="plan_id" property="planId" jdbcType="INTEGER"/>
+        <result column="plan_name" property="planName" jdbcType="VARCHAR"/>
+        <result column="plan_description" property="planDescription" jdbcType="VARCHAR"/>
+        <result column="plan_employee" property="planEmployee" jdbcType="INTEGER"/>
+        <result column="plan_start_time" property="planStartTime" jdbcType="VARCHAR"/>
+        <result column="plan_end_time" property="planEndTime" jdbcType="VARCHAR"/>
+        <result column="plan_status" property="planStatus" jdbcType="VARCHAR"/>
+        <result column="plan_is_feedback" property="planIsFeedback" jdbcType="INTEGER"/>
+        <result column="plan_feedback" property="planFeedback" jdbcType="VARCHAR"/>
+        <result column="task_id" property="taskId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="PlanMap" type="Plan" extends="BasePlanMap">
+        <association property="employee" javaType="User">
+            <id column="user_id" jdbcType="INTEGER"/>
+            <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <select id="selectPlans" resultMap="PlanMap">
+        SELECT *
+        FROM plan p
+        INNER JOIN user u
+        WHERE p.task_id=#{taskId}
+        AND p.plan_start_time>=#{planStartTime}
+        AND #{planEndTime}>=p.plan_end_time
+        AND p.plan_is_feedback=#{planIsFeedback}
+        AND u.user_id=p.plan_employee
+    </select>
+
+    <select id="selectTaskOne" resultMap="com.Ayano.springboot1.mapper.TaskMapper.TaskMap">
+        SELECT *
+        FROM task t
+        INNER JOIN user u
+        WHERE t.task_id=#{taskId}
+        AND t.employee_id = u.user_id
+    </select>
+
+    <select id="selectTask" resultMap="com.Ayano.springboot1.mapper.TaskMapper.TaskMap">
+        SELECT *
+        FROM task t
+        INNER JOIN user u
+        WHERE t.employee_id=#{userId}
+        AND t.employee_id = u.user_id
+    </select>
+
+    <select id="selectTask_Plans" resultMap="PlanMap">
+        SELECT *
+        FROM plan p
+        INNER JOIN user u
+        WHERE p.task_id=#{taskId}
+        AND p.plan_employee=u.user_id
+    </select>
+
+    <insert id="insertPlan" parameterType="Plan">
+        INSERT INTO plan
+        VALUES(0,
+        #{planName},
+        #{planDescription},
+        #{planEmployee},
+        #{planStartTime},
+        #{planEndTime},
+        0,
+        0,
+        null,
+        #{taskId})
+    </insert>
+
+    <update id="updatePlan" parameterType="Plan">
+        UPDATE plan
+        SET
+        plan_status=#{planStatus},
+        plan_is_feedback=#{planIsFeedback},
+        plan_feedback=#{planFeedback}
+        WHERE plan_id=#{planId}
+    </update>
+
+    <delete id="deletePlan" parameterType="Plan">
+        DELETE FROM plan
+        WHERE plan_id=#{planId}
+    </delete>
+</mapper>

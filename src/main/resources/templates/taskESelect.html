@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>任务列表</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+          integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+          crossorigin="anonymous"></script>
+  <style>
+
+  </style>
+</head>
+<body>
+<div class="panel panel-primary">
+  <!-- 表格头 -->
+  <div class="panel-heading">
+    <h3 class="panel-title">数据表格</h3>
+  </div>
+  <!-- 表格体-->
+  <div class="panel-body">
+    <table class="table table-hover" style="margin-top: 2px;">
+      <thead>
+      <tr>
+        <th>任务编号</th>
+        <th>任务名称</th>
+        <th>起始时间</th>
+        <th>结束时间</th>
+        <th>执行人</th>
+        <th>任务状态</th>
+        <th>任务描述</th>
+        <th>制定计划</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="bean : ${session.pageInfo.list}">
+        <td th:text="${bean.taskId}"></td>
+        <td th:text="${bean.taskName}"></td>
+        <td th:text="${bean.taskStartTime}"></td>
+        <td th:text="${bean.taskEndTime}"></td>
+        <td th:text="${bean.employee.userName}"></td>
+        <td th:if="${bean.taskStatus == 0}">未开始</td>
+        <td th:if="${bean.taskStatus == 1}">实施中</td>
+        <td th:if="${bean.taskStatus == 2}">已完成</td>
+        <td th:text="${bean.taskDescription}"></td>
+        <td>
+          <a th:href="@{/Plan/toPlanAdd?taskId=}+${bean.taskId}"
+             class="list-group-item list-group-item-success">制定计划</a>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="8" th:text="${msg}" style="text-align: center;font-size: 30px;"></td>
+      </tr>
+      </tbody>
+    </table>
+    <div style="margin-left: 40%">
+      <form id="_pageForm" th:action="@{/Plan/SelectTask}" method="post">
+        <div>
+          <ul class="pagination" style="height: 100%;">
+            <li>
+              <a th:href="@{/Plan/SelectTask?pageNum=}+${session.pageInfo.prePage}+'&pageSize='+${session.pageInfo.pageSize}"><<</a>
+            </li>
+            &nbsp;&nbsp;
+            <li th:each="page : ${session.totalPages}">&nbsp;
+              <a th:href="@{/Plan/SelectTask?pageNum=}+${page}+'&pageSize='+${session.pageInfo.pageSize}"><span
+                      th:text="${page}"></span></a>&nbsp;
+            </li>
+            &nbsp;&nbsp;
+            <li>
+              <a th:href="@{/Plan/SelectTask?pageNum=}+${session.pageInfo.nextPage}+'&pageSize='+${session.pageInfo.pageSize}">>></a>
+            </li>&nbsp;
+            当前页：<span th:text="${session.pageInfo.pageNum}"></span>
+            总页数：<span th:text="${session.pageInfo.pages}"></span>
+          </ul>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

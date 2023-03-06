@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+          integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+          crossorigin="anonymous"></script>
+  <style>
+  </style>
+</head>
+<body>
+<form th:action="@{/Plan/AddPlan}">
+  <div class="form-group">
+    <label>计划名称
+      <input type="text" name="planName" class="form-control" placeholder="请输入计划名"
+             aria-describedby="basic-addon1" required="required">
+    </label>
+    <label>计划描述
+      <input type="text" name="planDescription" class="form-control" placeholder="请输入计划描述"
+             aria-describedby="basic-addon1" required="required">
+    </label>
+  </div>
+  <br>
+  <div class="form-group">
+    <label>起始时间
+      <input type="date" name="planStartTime" class="form-control"
+             aria-describedby="basic-addon1" required="required">
+    </label>
+    <label>截止时间
+      <input type="date" name="planEndTime" class="form-control"
+             aria-describedby="basic-addon1" required="required">
+    </label>
+  </div>
+  <br>
+  <input id="_submit" type="submit" class="btn btn-primary" value="提交" onclick="click()"/>
+</form>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>人员列表</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.3/jquery.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+            integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
+            crossorigin="anonymous"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div class="panel panel-primary">
+    <!-- 表格头 -->
+    <div class="panel-heading">
+        <h3 class="panel-title">数据表格</h3>
+    </div>
+    <!-- 表格体-->
+    <div class="panel-body">
+        <table class="table table-hover" style="margin-top: 2px;">
+            <thead>
+            <tr>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>生日</th>
+                <th>学历</th>
+                <th>职位</th>
+                <th>入职日期</th>
+                <th>工作经验</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${session.employee.userName}"></td>
+                <td th:text="${session.employee.userSex}"></td>
+                <td th:text="${session.employee.userBirth}"></td>
+                <td th:if="${session.employee.userDegree == 1}">高中</td>
+                <td th:if="${session.employee.userDegree == 2}">大专</td>
+                <td th:if="${session.employee.userDegree == 3}">本科</td>
+                <td th:if="${session.employee.userDegree == 4}">硕士</td>
+                <td th:if="${session.employee.userDegree == 5}">博士</td>
+                <td th:text="${session.employee.userPosition}"></td>
+                <td th:text="${session.employee.userBoardingTime}"></td>
+                <td th:text="${session.employee.userExperience}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+</script>
+</html>

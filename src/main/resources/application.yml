@@ -1,0 +1,43 @@
+# 应用名称
+spring:
+  # 设置热部署
+  devtools:
+    livereload:
+      enabled: true
+  thymeleaf:
+    # 关闭thymeleaf的缓存，因为如果开启缓存的情况下，你修改了页面必须要重启服务器才生效
+    cache: false
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mission?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: Ayano2002
+    type: com.alibaba.druid.pool.DruidDataSource
+  application:
+    name: springboot1
+  mvc:
+    # 静态资源的访问路径，
+    static-path-pattern: /**/*
+  resources:
+    # 真实存放资源的路径，如果有多个路径使用逗号隔开
+    static-locations: classpath:/static/,classpath:/templates/
+
+# 端口
+server:
+  # 请求工程名称
+  servlet:
+    context-path: /mission
+  # 请求端口号
+  port: 8081
+
+# mybatis
+mybatis:
+  # 映射配置文件名称
+  mapper-locations: classpath:mapper/*.xml
+  # 包别名
+  type-aliases-package: com.Ayano.springboot1.pojo
+  configuration:
+    # 默认使用驼峰式命名
+    map-underscore-to-camel-case: true
+    # 添加日志记录
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
